@@ -9,6 +9,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import DeleteModal from "./DeleteModal";
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { increment } from "./Redux/slice";
 function TrashUsers() {
   const [data, setData] = useState([]);
   const [view, setView] = useState("");
@@ -22,6 +24,8 @@ function TrashUsers() {
   };
 
   const context = useContext(contextVal);
+  const dispatch = useDispatch()
+
 
   const allData = async () => {
     try {
@@ -41,19 +45,33 @@ function TrashUsers() {
       data
     );
     if (response) {
-      context.setSnackbar({
-        state: true,
-        message: "Restore Successfully",
-        severity: response.data.status,
-      });
+      // context.setSnackbar({
+      //   state: true,
+      //   message: "Restore Successfully",
+      //   severity: response.data.status,
+      // });
+      dispatch(
+        increment({
+          state: true,
+          message: response.data.message,
+          severity: response.data.status,
+        })
+      );
 
       allData();
     } else {
-      context.setSnackbar({
-        state: true,
-        message: response.data.message,
-        severity: response.data.status,
-      });
+      // context.setSnackbar({
+      //   state: true,
+      //   message: response.data.message,
+      //   severity: response.data.status,
+      // });
+      dispatch(
+        increment({
+          state: true,
+          message: response.data.message,
+          severity: response.data.status,
+        })
+      );
     }
   };
  

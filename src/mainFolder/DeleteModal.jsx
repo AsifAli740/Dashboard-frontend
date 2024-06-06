@@ -5,6 +5,8 @@ import { useContext } from "react";
 import axios from "axios";
 import { contextVal } from "./context";
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { increment } from "./Redux/slice";
 
 const style = {
   position: "absolute",
@@ -20,6 +22,8 @@ const style = {
 
 export default function DeleteModal({ modal, closeModal, allData, userid }) {
   const context = useContext(contextVal);
+  const dispatch = useDispatch()
+
   const permanentDelete = async () => {
 
     try {
@@ -28,19 +32,33 @@ export default function DeleteModal({ modal, closeModal, allData, userid }) {
       );
 
       if (response) {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.severity,
+          })
+        );
         allData();
         closeModal();
       } else {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.severity,
+          })
+        );
       }
     } catch (error) {
     }

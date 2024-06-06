@@ -13,10 +13,13 @@ import axios from "axios";
 import { contextVal } from "./context";
 import LoginIcon from "@mui/icons-material/Login";
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { increment } from "./Redux/slice";
 
 
 export default function SignIn() {
   const context = useContext(contextVal);
+  const dispatch = useDispatch()
 
   const [signInState, setSignInState] = useState({});
 
@@ -55,17 +58,31 @@ export default function SignIn() {
         let userData = JSON.stringify(user);
         localStorage.setItem("token", token);
         localStorage.setItem("user", userData);
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
       } else {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
       }
     } catch (error) {
     }

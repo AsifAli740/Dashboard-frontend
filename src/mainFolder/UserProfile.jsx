@@ -16,6 +16,8 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { BasicModal } from './Modal';
 import { contextVal } from './context';
 import { BASE_URL } from './constant';
+import { useDispatch } from "react-redux";
+import { increment } from './Redux/slice';
 
 const icons = [
     {
@@ -40,6 +42,7 @@ const icons = [
 export default function ProfileCard() {
   const [signUpOpen, setSignUpOpen] = useState(false)
   const context = useContext(contextVal);
+  const dispatch = useDispatch()
   const [user, setUser] = useState({});
   const [image, setimage] = useState("");
   const [imgData, setImgData] = useState({
@@ -96,6 +99,13 @@ export default function ProfileCard() {
             state: true,
             message: "Image size is too big",
           });
+          // dispatch(
+          //   increment({
+          //     state: true,
+          //     message: "image is too big",
+          //     // severity: response.data.status,
+          //   })
+          // );
         }
       };
     } catch (error) {

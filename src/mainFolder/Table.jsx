@@ -16,6 +16,9 @@ import { SearchIconWrapper, StyledInputBase, Search } from "../styled";
 import { contextVal } from "./context";
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { increment } from "./Redux/slice";
+
 function UserDataTable(props) {
   const [view, setView] = useState("");
   const [data, setdata] = useState([]);
@@ -23,6 +26,8 @@ function UserDataTable(props) {
   const [open, setOpen] = useState(false);
 
   let context = useContext(contextVal)
+  const dispatch = useDispatch()
+
 
   const handleOpen = (id) => {
     const user = data.find((ele) => ele._id === id);
@@ -159,21 +164,35 @@ function UserDataTable(props) {
       );
 
       if (response.status === 200) {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          color: response.data.msgcolor,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   color: response.data.msgcolor,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
         allData();
       } else {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          color: response.data.msgcolor,
-          severity: response.data.status,
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   color: response.data.msgcolor,
+        //   severity: response.data.status,
 
-        });
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
       }
     } catch (err) {
     

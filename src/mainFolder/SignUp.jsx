@@ -17,6 +17,8 @@ import { useForm } from "react-hook-form";
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { ErrorShow } from "../styled";
 import { BASE_URL } from "./constant";
+import { useDispatch } from "react-redux";
+import { increment } from "./Redux/slice";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -24,6 +26,8 @@ const defaultTheme = createTheme();
 
 export default function SignUp({ handleClose, handleCloseEdit, edit, allData }) {
   const context = useContext(contextVal);
+  const dispatch = useDispatch()
+
 
   const [signUpState, setSignUpState] = useState({});
   const [isSubmitBtnClicked, setIsSubmitBtnClicked] = useState(false);
@@ -59,10 +63,17 @@ export default function SignUp({ handleClose, handleCloseEdit, edit, allData }) 
         localStorage.setItem("user", userData);
         navigate("/dashboard");
       } else {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.severity,
+          })
+        );
       }
     } catch (error) {
     }
@@ -96,21 +107,35 @@ export default function SignUp({ handleClose, handleCloseEdit, edit, allData }) 
         localStorage.setItem("user", JSON.stringify(response.data.user));}
         context.setUser(localStorage.getItem("user"));
         
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
         if(allData && edit){
           allData()
         }
         edit ? handleCloseEdit(): handleClose();
       } else {
-        context.setSnackbar({
-          state: true,
-          message: response.data.message,
-          severity: response.data.status,
-        });
+        // context.setSnackbar({
+        //   state: true,
+        //   message: response.data.message,
+        //   severity: response.data.status,
+        // });
+        dispatch(
+          increment({
+            state: true,
+            message: response.data.message,
+            severity: response.data.status,
+          })
+        );
       }
     } catch (error) {
     }

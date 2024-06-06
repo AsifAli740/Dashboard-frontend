@@ -10,12 +10,16 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import { contextVal } from "./context";
 import { ViewModal } from "./ViewModal";
 import { BASE_URL } from "./constant";
+import { increment } from "./Redux/slice";
+import { useDispatch } from "react-redux";
 function ActiveUsers() {
   const [data, setData] = useState([]);
   const [view, setView] = useState("");
   const [edit, setEdit] = useState("");
   const [open, setOpen] = useState(false);
   const [activeEdit, setActiveEdit] = useState(false);
+  const dispatch = useDispatch()
+
 
   const handleOpenEdit = (id) => {
     const user = data.find((ele) => ele._id === id);
@@ -50,18 +54,32 @@ function ActiveUsers() {
       data
     );
     if (response) {
-      context.setSnackbar({
-        state: true,
-        message: response.data.message,
-        severity: response.data.status,
-      });
+      // context.setSnackbar({
+      //   state: true,
+      //   message: response.data.message,
+      //   severity: response.data.status,
+      // });
+      dispatch(
+        increment({
+          state: true,
+          message: response.data.message,
+          severity: response.data.status,
+        })
+      );
       allData();
     } else {
-      context.setSnackbar({
-        state: true,
-        message: response.data.message,
-        severity: response.data.status,
-      });
+      // context.setSnackbar({
+      //   state: true,
+      //   message: response.data.message,
+      //   severity: response.data.status,
+      // });
+      dispatch(
+        increment({
+          state: true,
+          message: response.data.message,
+          severity: response.data.status,
+        })
+      );
     }
   };
 
